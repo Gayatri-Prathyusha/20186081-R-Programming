@@ -1,0 +1,28 @@
+statedata = read.csv("statedata.csv")
+summary(statedata)
+str(statedata)
+plot(statedata$x, statedata$y)
+which.max(tapply(statedata$HS.Grad, statedata$state.region, mean))
+boxplot(statedata$Murder ~ statedata$state.region) 
+NortheastData = subset(statedata, state.region == "Northeast")
+table(NortheastData$state.abb, NortheastData$Murder)
+regModel = lm(Life.Exp ~ Population + Income + Illiteracy + Murder + HS.Grad + Frost + Area, data=statedata)
+summary(regModel)
+plot(statedata$Income, statedata$Life.Exp)
+statedata$state.name[which.min(statedata$Life.Exp)]
+sort(abs(regModel$residuals))
+
+Elantra = read.csv("elantra.csv")
+ElantraTrain = subset(Elantra, Year <= 2012)
+ElantraTest = subset(Elantra, Year > 2012)
+ElantraLM = lm(ElantraSales ~ Unemployment + Queries + CPI_energy + CPI_all, data=ElantraTrain)
+
+summary(ElantraLM)
+\ElantraLM = lm(ElantraSales ~ Unemployment + Queries + CPI_energy + CPI_all + Month, data=ElantraTrain)
+lantraTrain$MonthFactor = as.factor(ElantraTrain$Month)
+ElantraTest$MonthFactor = as.factor(ElantraTest$Month)
+ElantraLM = lm(ElantraSales ~ Unemployment + Queries + CPI_energy + CPI_all + MonthFactor, data=ElantraTrain)
+cor(ElantraTrain[c("Unemployment","Month","Queries","CPI_energy","CPI_all")])
+PredictTest = predict(ElantraLM, newdata=ElantraTest)
+SSE = sum((PredictTest - ElantraTest$ElantraSales)^2)
+

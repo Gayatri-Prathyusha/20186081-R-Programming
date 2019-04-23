@@ -1,0 +1,22 @@
+poll = read.csv("PollingData.csv")
+str(poll)
+summary(poll)
+table(poll$Year)
+install.packages("mice")
+library("mice")
+simple = poll [ c("Rasmussen","SurveyUSA", "PropR","DiffCount")]
+summary(simple)
+set.seed(144)
+imputed = complete(mice(simple))
+summary(imputed)
+poll$Rasmussen = imputed$Rasmussen
+poll$SurveyUSA = imputed$SurveyUSA
+summary(poll)
+train = subset(poll, Year == 2004 | Year == 2008)
+test = subset(poll, Year == 2012)
+table(train$Republican)
+sign(20)
+sign(-10)
+sign(0)
+table(sign(train$Rasmussen))
+table(train$Republican,sign(train$Rasmussen))
